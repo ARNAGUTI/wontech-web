@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react";
-import Chat from "./chat"; // ya tienes este
+import { Chat } from "./chat"; 
 
 export default function FloatingChat() {
   const [isOpen, setIsOpen] = useState(false);
