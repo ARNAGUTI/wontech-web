@@ -84,3 +84,17 @@ export default async function RootLayout({
     </html>
   );
 }
+
+import "./globals.css";
+import FloatingChat from "@/components/FloatingChat"; // asegúrate que coincida
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="es">
+      <body>
+        {children}
+        <FloatingChat /> {/* ← aquí se monta el botón flotante */}
+      </body>
+    </html>
+  );
+}
