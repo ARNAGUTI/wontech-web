@@ -1,4 +1,4 @@
-import Chat from "@/components/chat"; // minúscula porque el archivo es "chat.tsx"
+import { Chat } from "@/components/chat"; // minúscula porque el archivo es "chat.tsx"
 
 export default function HomePage() {
   return (
