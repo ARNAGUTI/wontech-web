@@ -19,8 +19,8 @@ export default function HomePage() {
           </div>
           <Image
             src="/images/foto1.jpg"
-            width={400}
-            height={300}
+            width={200}
+            height={200}
             alt="Foto 1"
             className="rounded-lg"
           />
@@ -34,8 +34,8 @@ export default function HomePage() {
           </div>
           <Image
             src="/images/foto2.jpg"
-            width={400}
-            height={300}
+            width={200}
+            height={200}
             alt="Foto 2"
             className="rounded-lg"
           />
