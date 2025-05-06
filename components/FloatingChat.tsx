@@ -19,7 +19,7 @@ export default function FloatingChat() {
         <div className="fixed bottom-20 right-6 z-40 w-[350px] h-[500px] bg-white border shadow-xl rounded-xl overflow-hidden">
           <iframe
             src="/chat"
-            className="w-full h-full border-none"
+            className="size-full border-none"
           />
         </div>
       )}
