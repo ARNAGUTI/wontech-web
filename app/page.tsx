@@ -1,5 +1,3 @@
-import { Chat } from "@/components/chat"; // minúscula porque el archivo es "chat.tsx"
-
 export default function HomePage() {
   return (
     <main className="p-8">
@@ -8,7 +6,10 @@ export default function HomePage() {
 
       <div className="border-t pt-8 mt-8">
         <h2 className="text-2xl mb-2">Asistente IA</h2>
-        <Chat />
+        <iframe
+          src="/chat"
+          className="w-full h-[500px] border rounded-xl"
+        />
       </div>
     </main>
   );
