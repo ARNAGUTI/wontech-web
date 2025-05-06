@@ -1,6 +1,5 @@
 'use client';
 import { useState } from "react";
-import { Chat } from "./chat"; 
 
 export default function FloatingChat() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +14,13 @@ export default function FloatingChat() {
         💬
       </button>
 
-      {/* Ventana del chat */}
+      {/* Ventana del chat usando iframe */}
       {isOpen && (
         <div className="fixed bottom-20 right-6 z-40 w-[350px] h-[500px] bg-white border shadow-xl rounded-xl overflow-hidden">
-          <Chat />
+          <iframe
+            src="/chat"
+            className="w-full h-full border-none"
+          />
         </div>
       )}
     </div>
