@@ -115,9 +115,15 @@ export async function POST(request: Request) {
               return;
             }
 
-            // ✅ Enviamos los datos en el formato correcto
+            // 🔍 Log para revisar el chunk que llega
             const chunk = decoder.decode(value);
-            controller.enqueue(`data: ${chunk}\n\n`);
+            console.log('📌 Chunk recibido:', chunk);
+
+            // ✅ Validación del chunk
+            if (chunk.trim().length > 0) {
+              controller.enqueue(`data: ${chunk}\n\n`);
+            }
+
             read();
           }).catch(error => {
             console.error('❌ Error leyendo el stream:', error);
