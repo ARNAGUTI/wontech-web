@@ -96,6 +96,11 @@ export async function POST(request: Request) {
       }),
     });
 
+    if (!response.body) {
+      console.error('❌ Error: response.body es null');
+      return new Response('OpenAI no devolvió datos en el cuerpo de la respuesta.', { status: 500 });
+    }
+
     const stream = new ReadableStream({
       start(controller) {
         const decoder = new TextDecoder();
