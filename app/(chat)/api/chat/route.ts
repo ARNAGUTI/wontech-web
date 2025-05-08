@@ -115,13 +115,16 @@ export async function POST(request: Request) {
               return;
             }
 
-            // 🔍 Log para revisar el chunk que llega
             const chunk = decoder.decode(value);
-            console.log('📌 Chunk recibido:', chunk);
+            console.log('📌 Chunk recibido (crudo):', chunk);
 
-            // ✅ Validación del chunk
-            if (chunk.trim().length > 0) {
-              controller.enqueue(`data: ${chunk}\n\n`);
+            // ✅ Intentamos parsear el JSON
+            try {
+              const jsonData = JSON.parse(chunk);
+              console.log('✅ JSON válido:', jsonData);
+              controller.enqueue(`data: ${JSON.stringify(jsonData)}\n\n`);
+            } catch (err) {
+              console.warn('⚠️ Chunk recibido no es JSON válido:', chunk);
             }
 
             read();
