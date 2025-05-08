@@ -61,6 +61,9 @@ function getStreamContext() {
   return globalStreamContext;
 }
 
+// 🚀 Modelos válidos en OpenAI
+const VALID_MODELS = ['gpt-3.5-turbo', 'gpt-4', 'text-davinci-003'];
+
 export async function POST(request: Request) {
   let requestBody: PostRequestBody;
 
@@ -72,9 +75,14 @@ export async function POST(request: Request) {
     return new Response('Invalid request body', { status: 400 });
   }
 
-  try {
-    console.log('📌 Request recibido:', requestBody);
+  // 🚀 Verificación del modelo
+  const selectedModel = VALID_MODELS.includes(requestBody.selectedChatModel)
+    ? requestBody.selectedChatModel
+    : 'gpt-3.5-turbo';
 
+  console.log('📌 Request recibido:', requestBody);
+
+  try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -82,7 +90,7 @@ export async function POST(request: Request) {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: requestBody.selectedChatModel,
+        model: selectedModel,
         messages: [{ role: "user", content: requestBody.message.parts.join(" ") }],
       }),
     });
