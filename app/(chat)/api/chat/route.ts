@@ -106,7 +106,10 @@ export async function POST(request: Request) {
     console.log('✅ Respuesta completa de OpenAI:', JSON.stringify(data, null, 2));
 
     // 🔍 Forzamos el Content-Type a application/json
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify({
+      message: data,
+      info: "🚀 Respuesta procesada correctamente, no es un stream"
+    }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json'
