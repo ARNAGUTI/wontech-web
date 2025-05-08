@@ -67,11 +67,15 @@ const VALID_MODELS = ['gpt-3.5-turbo', 'gpt-4', 'text-davinci-003'];
 export async function POST(request: Request) {
   let requestBody: PostRequestBody;
 
+  // 🔍 Verificación de variables de entorno
+  console.log('🔍 OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? '✅ Cargada' : '❌ No encontrada');
+  console.log('🔍 ASSISTANT_ID:', process.env.ASSISTANT_ID ? '✅ Cargada' : '❌ No encontrada');
+
   try {
     const json = await request.json();
     requestBody = postRequestBodySchema.parse(json);
   } catch (error) {
-    console.error('Error al parsear el cuerpo de la solicitud:', error);
+    console.error('❌ Error al parsear el cuerpo de la solicitud:', error);
     return new Response('Invalid request body', { status: 400 });
   }
 
@@ -100,6 +104,8 @@ export async function POST(request: Request) {
       return new Response('OpenAI no devolvió datos en el cuerpo de la respuesta.', { status: 500 });
     }
 
+    let buffer = '';
+
     const reader = response.body.getReader();
 
     const stream = new ReadableStream({
@@ -118,7 +124,12 @@ export async function POST(request: Request) {
             const chunk = decoder.decode(value);
             console.log('📌 Chunk recibido (crudo):', chunk);
 
-            const lines = chunk.split('\n').filter(line => line.trim() !== "");
+            buffer += chunk;
+
+            // Dividir por líneas y procesar solo las completas
+            const lines = buffer.split('\n');
+            buffer = lines.pop()!;  // Lo que queda incompleto lo guardamos
+
             lines.forEach((line) => {
               console.log('➡️ Línea detectada antes de enviar:', line);
 
@@ -126,12 +137,12 @@ export async function POST(request: Request) {
                 const jsonData = line.replace('data: ', '').trim();
                 try {
                   if (jsonData !== "[DONE]") {
-                    JSON.parse(jsonData);
+                    JSON.parse(jsonData);  // Si se puede parsear, lo enviamos
                   }
                   console.log('✅ JSON válido (enviado al frontend):', `data: ${jsonData}\n\n`);
                   controller.enqueue(`data: ${jsonData}\n\n`);
                 } catch (err) {
-                  console.warn('⚠️ JSON no válido, ignorado:', jsonData);
+                  console.warn('⚠️ JSON no válido (posiblemente fragmentado), almacenado temporalmente:', jsonData);
                 }
               }
             });
