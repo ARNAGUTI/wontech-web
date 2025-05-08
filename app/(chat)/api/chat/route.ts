@@ -110,6 +110,8 @@ export async function POST(request: Request) {
 
         function read() {
           reader.read().then(({ done, value }) => {
+            console.log('🔍 Estado del stream: done =', done, ', value =', value);
+
             if (done) {
               console.log('🛑 Stream finalizado correctamente.');
               controller.enqueue("data: [DONE]\n\n");
@@ -143,6 +145,7 @@ export async function POST(request: Request) {
           });
         }
 
+        console.log('🚀 Stream iniciado correctamente.');
         read();
       }
     });
