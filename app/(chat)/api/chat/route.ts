@@ -101,7 +101,6 @@ export async function POST(request: Request) {
       return new Response('OpenAI no devolvió datos en el cuerpo de la respuesta.', { status: 500 });
     }
 
-    // ✅ TypeScript Guard para asegurar que no es null
     const reader = response.body?.getReader();
 
     const stream = new ReadableStream({
@@ -118,17 +117,18 @@ export async function POST(request: Request) {
             const chunk = decoder.decode(value);
             console.log('📌 Chunk recibido (crudo):', chunk);
 
-            // ✅ Filtramos líneas válidas
             const lines = chunk.split('\n');
             lines.forEach((line) => {
+              console.log('➡️ Línea detectada:', line);
+
               if (line.startsWith('data:')) {
-                const jsonData = line.replace('data: ', '');
+                const jsonData = line.replace('data: ', '').trim();
                 try {
-                  JSON.parse(jsonData); // Si no es válido, fallará aquí
-                  console.log('✅ Línea válida enviada:', jsonData);
-                  controller.enqueue(`${line}\n\n`);
+                  JSON.parse(jsonData);
+                  console.log('✅ JSON válido a enviar:', jsonData);
+                  controller.enqueue(`data: ${jsonData}\n\n`);
                 } catch (err) {
-                  console.warn('⚠️ Línea no válida, ignorada:', line);
+                  console.warn('⚠️ JSON no válido, ignorado:', jsonData);
                 }
               }
             });
