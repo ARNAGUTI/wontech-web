@@ -97,14 +97,16 @@ export async function POST(request: Request) {
     });
 
     if (!response.body) {
-      console.error('❌ Error: response.body es null');
+      console.error('❌ Error: response.body es null o undefined');
       return new Response('OpenAI no devolvió datos en el cuerpo de la respuesta.', { status: 500 });
     }
+
+    // ✅ TypeScript Guard para asegurar que no es null
+    const reader = response.body?.getReader();
 
     const stream = new ReadableStream({
       start(controller) {
         const decoder = new TextDecoder();
-        const reader = response.body.getReader();
 
         function read() {
           reader.read().then(({ done, value }) => {
