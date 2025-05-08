@@ -101,7 +101,8 @@ export async function POST(request: Request) {
       return new Response('OpenAI no devolvió datos en el cuerpo de la respuesta.', { status: 500 });
     }
 
-    const reader = response.body?.getReader();
+    console.log('🚀 Iniciando lectura del stream...');
+    const reader = response.body.getReader();
 
     const stream = new ReadableStream({
       start(controller) {
@@ -110,7 +111,7 @@ export async function POST(request: Request) {
         function read() {
           reader.read().then(({ done, value }) => {
             if (done) {
-              // 🚀 Final del Stream
+              console.log('🛑 Stream finalizado correctamente.');
               controller.enqueue("data: [DONE]\n\n");
               controller.close();
               return;
@@ -121,13 +122,13 @@ export async function POST(request: Request) {
 
             const lines = chunk.split('\n');
             lines.forEach((line) => {
-              console.log('➡️ Línea detectada:', line);
+              console.log('➡️ Línea detectada antes de enviar:', line);
 
               if (line.startsWith('data:')) {
                 const jsonData = line.replace('data: ', '').trim();
                 try {
                   JSON.parse(jsonData);
-                  console.log('✅ JSON válido a enviar:', jsonData);
+                  console.log('✅ JSON válido (enviado al frontend):', `data: ${jsonData}\n\n`);
                   controller.enqueue(`data: ${jsonData}\n\n`);
                 } catch (err) {
                   console.warn('⚠️ JSON no válido, ignorado:', jsonData);
@@ -146,6 +147,7 @@ export async function POST(request: Request) {
       }
     });
 
+    console.log('🚀 Stream preparado y enviado al frontend.');
     return new Response(stream, {
       headers: {
         'Content-Type': 'text/event-stream',
