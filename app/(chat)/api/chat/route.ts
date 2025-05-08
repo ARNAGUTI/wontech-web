@@ -75,7 +75,6 @@ export async function POST(request: Request) {
     return new Response('Invalid request body', { status: 400 });
   }
 
-  // 🚀 Verificación del modelo
   const selectedModel = VALID_MODELS.includes(requestBody.selectedChatModel)
     ? requestBody.selectedChatModel
     : 'gpt-3.5-turbo';
@@ -101,7 +100,6 @@ export async function POST(request: Request) {
       return new Response('OpenAI no devolvió datos en el cuerpo de la respuesta.', { status: 500 });
     }
 
-    console.log('🚀 Iniciando lectura del stream...');
     const reader = response.body.getReader();
 
     const stream = new ReadableStream({
@@ -110,10 +108,8 @@ export async function POST(request: Request) {
 
         function read() {
           reader.read().then(({ done, value }) => {
-            console.log('🔍 Estado del stream: done =', done, ', value =', value);
-
             if (done) {
-              console.log('🛑 Stream finalizado correctamente.');
+              console.log("🛑 Stream finalizado correctamente.");
               controller.enqueue("data: [DONE]\n\n");
               controller.close();
               return;
@@ -122,14 +118,16 @@ export async function POST(request: Request) {
             const chunk = decoder.decode(value);
             console.log('📌 Chunk recibido (crudo):', chunk);
 
-            const lines = chunk.split('\n');
+            const lines = chunk.split('\n').filter(line => line.trim() !== "");
             lines.forEach((line) => {
               console.log('➡️ Línea detectada antes de enviar:', line);
 
               if (line.startsWith('data:')) {
                 const jsonData = line.replace('data: ', '').trim();
                 try {
-                  JSON.parse(jsonData);
+                  if (jsonData !== "[DONE]") {
+                    JSON.parse(jsonData);
+                  }
                   console.log('✅ JSON válido (enviado al frontend):', `data: ${jsonData}\n\n`);
                   controller.enqueue(`data: ${jsonData}\n\n`);
                 } catch (err) {
@@ -145,12 +143,10 @@ export async function POST(request: Request) {
           });
         }
 
-        console.log('🚀 Stream iniciado correctamente.');
         read();
       }
     });
 
-    console.log('🚀 Stream preparado y enviado al frontend.');
     return new Response(stream, {
       headers: {
         'Content-Type': 'text/event-stream',
