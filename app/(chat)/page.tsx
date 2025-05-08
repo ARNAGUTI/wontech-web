@@ -1,11 +1,11 @@
-
 'use client';
 
 import Image from 'next/image';
-import { Chat } from '@/components/chat'; // solo si quieres usarlo directo
-// o usa el FloatingChat si prefieres flotante
+import { useState } from 'react';
 
 export default function HomePage() {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
   return (
     <main className="min-h-screen bg-gray-950 text-white p-12">
       <h1 className="text-5xl font-bold text-center mb-12">TÍTULO DE TU WEB</h1>
@@ -15,7 +15,9 @@ export default function HomePage() {
         <div className="space-y-6">
           <div>
             <h2 className="text-xl font-semibold">Texto de presentación</h2>
-            <p className="text-gray-400">Aquí puedes escribir algo introductorio sobre tu servicio o IA.</p>
+            <p className="text-gray-400">
+              Aquí puedes escribir algo introductorio sobre tu servicio o IA.
+            </p>
           </div>
           <Image
             src="/images/foto1.jpg"
@@ -30,7 +32,9 @@ export default function HomePage() {
         <div className="space-y-6">
           <div>
             <h2 className="text-xl font-semibold">Más información</h2>
-            <p className="text-gray-400">Otra sección de texto o características.</p>
+            <p className="text-gray-400">
+              Otra sección de texto o características.
+            </p>
           </div>
           <Image
             src="/images/foto2.jpg"
@@ -53,10 +57,15 @@ export default function HomePage() {
 
           <div className="bg-white text-black rounded-lg shadow p-4 h-[500px] overflow-hidden">
             <h3 className="text-lg font-bold mb-2">Asistente IA</h3>
+            {!iframeLoaded && (
+              <p className="text-center text-gray-500">Cargando chat...</p>
+            )}
             <iframe
-              src="/chat"
+              src="/chat/embed"
               className="w-full h-full border-none rounded-md"
               title="Asistente"
+              onLoad={() => setIframeLoaded(true)}
+              onError={() => console.error('Error al cargar el chat')}
             />
           </div>
         </div>
