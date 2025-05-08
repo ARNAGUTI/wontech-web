@@ -92,7 +92,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         model: selectedModel,
         messages: [{ role: "user", content: requestBody.message.parts.join(" ") }],
-        stream: false // 🔍 Desactivamos streaming temporalmente
+        stream: false
       }),
     });
 
@@ -105,7 +105,13 @@ export async function POST(request: Request) {
     const data = await response.json();
     console.log('✅ Respuesta completa de OpenAI:', JSON.stringify(data, null, 2));
 
-    return new Response(JSON.stringify(data), { status: 200 });
+    // 🔍 Forzamos el Content-Type a application/json
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   } catch (error) {
     console.error('❌ Error al llamar a OpenAI:', error);
     return new Response('Internal Server Error', { status: 500 });
