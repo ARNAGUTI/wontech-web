@@ -118,14 +118,20 @@ export async function POST(request: Request) {
             const chunk = decoder.decode(value);
             console.log('📌 Chunk recibido (crudo):', chunk);
 
-            // ✅ Intentamos parsear el JSON
-            try {
-              const jsonData = JSON.parse(chunk);
-              console.log('✅ JSON válido:', jsonData);
-              controller.enqueue(`data: ${JSON.stringify(jsonData)}\n\n`);
-            } catch (err) {
-              console.warn('⚠️ Chunk recibido no es JSON válido:', chunk);
-            }
+            // ✅ Filtramos líneas válidas
+            const lines = chunk.split('\n');
+            lines.forEach((line) => {
+              if (line.startsWith('data:')) {
+                const jsonData = line.replace('data: ', '');
+                try {
+                  JSON.parse(jsonData); // Si no es válido, fallará aquí
+                  console.log('✅ Línea válida enviada:', jsonData);
+                  controller.enqueue(`${line}\n\n`);
+                } catch (err) {
+                  console.warn('⚠️ Línea no válida, ignorada:', line);
+                }
+              }
+            });
 
             read();
           }).catch(error => {
