@@ -110,6 +110,7 @@ export async function POST(request: Request) {
         function read() {
           reader.read().then(({ done, value }) => {
             if (done) {
+              controller.enqueue("event: end\ndata: end\n\n");
               controller.close();
               return;
             }
@@ -126,7 +127,7 @@ export async function POST(request: Request) {
                 try {
                   JSON.parse(jsonData);
                   console.log('✅ JSON válido a enviar:', jsonData);
-                  controller.enqueue(`data: ${jsonData}\n\n`);
+                  controller.enqueue(`event: message\ndata: ${jsonData}\n\n`);
                 } catch (err) {
                   console.warn('⚠️ JSON no válido, ignorado:', jsonData);
                 }
