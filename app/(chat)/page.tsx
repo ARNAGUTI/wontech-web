@@ -61,11 +61,11 @@ export default function HomePage() {
               <p className="text-center text-gray-500">Cargando chat...</p>
             )}
             <iframe
-              src="/chat/embed"
+              src="/embed"
               className="w-full h-full border-none rounded-md"
               title="Asistente"
-              onLoad={() => setIframeLoaded(true)}
-              onError={() => console.error('Error al cargar el chat')}
+              sandbox="allow-scripts allow-same-origin allow-popups"
+              loading="lazy"
             />
           </div>
         </div>
