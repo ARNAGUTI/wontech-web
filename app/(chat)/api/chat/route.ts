@@ -72,7 +72,35 @@ export async function POST(request: Request) {
     return new Response('Invalid request body', { status: 400 });
   }
 
-  // Aquí sigue el resto del código optimizado que estaba preparado
+  try {
+    console.log('📌 Request recibido:', requestBody);
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: requestBody.selectedChatModel,
+        messages: [{ role: "user", content: requestBody.message.parts.join(" ") }],
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en OpenAI API:', errorText);
+      return new Response('Error en la respuesta de OpenAI: ' + errorText, { status: response.status });
+    }
+
+    const data = await response.json();
+    console.log('✅ Respuesta de OpenAI:', data);
+
+    return new Response(JSON.stringify(data), { status: 200 });
+  } catch (error) {
+    console.error('❌ Error al llamar a OpenAI:', error);
+    return new Response('Internal Server Error', { status: 500 });
+  }
 }
 
 export async function GET(request: Request) {
