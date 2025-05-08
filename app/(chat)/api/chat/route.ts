@@ -92,27 +92,38 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         model: selectedModel,
         messages: [{ role: "user", content: requestBody.message.parts.join(" ") }],
-        stream: false
+        stream: true
       }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ Error en OpenAI API:', errorText);
-      return new Response('Error en la respuesta de OpenAI: ' + errorText, { status: response.status });
-    }
+    const stream = new ReadableStream({
+      start(controller) {
+        const decoder = new TextDecoder();
+        const reader = response.body.getReader();
 
-    const data = await response.json();
-    console.log('✅ Respuesta completa de OpenAI:', JSON.stringify(data, null, 2));
+        function read() {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              controller.close();
+              return;
+            }
+            controller.enqueue(decoder.decode(value));
+            read();
+          }).catch(error => {
+            console.error('❌ Error leyendo el stream:', error);
+            controller.error(error);
+          });
+        }
 
-    // 🔍 Forzamos el Content-Type a application/json
-    return new Response(JSON.stringify({
-      message: data,
-      info: "🚀 Respuesta procesada correctamente, no es un stream"
-    }), {
-      status: 200,
+        read();
+      }
+    });
+
+    return new Response(stream, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
       }
     });
   } catch (error) {
