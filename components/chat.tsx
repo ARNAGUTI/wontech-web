@@ -77,6 +77,7 @@ const Chat = ({
     },
   });
 
+  // ✅ El efecto de reanudación
   useEffect(() => {
     if (autoResume) {
       experimental_resume();
@@ -95,6 +96,7 @@ const Chat = ({
     expires: '',
   };
 
+  // ✅ Retorno corregido
   return (
     <div className="flex flex-col min-w-0 h-dvh bg-background">
       <ChatHeader
@@ -102,13 +104,13 @@ const Chat = ({
         selectedModelId={initialChatModel}
         selectedVisibilityType={initialVisibilityType}
         isReadonly={isReadonly}
-        session={safeSession}  // 👈 Aquí pasamos el safeSession
+        session={safeSession}
       />
 
       <Messages
         chatId={id}
         status={status}
-        votes={[]}     {/* ✅ Pasamos un array vacío en lugar de null */}
+        votes={[]} {/* 👈 Le pasamos un array vacío para que no falle */}
         messages={messages}
         setMessages={setMessages}
         reload={reload}
