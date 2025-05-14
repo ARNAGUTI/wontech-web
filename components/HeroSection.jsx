@@ -8,6 +8,9 @@ const HeroSection = () => {
   const [showNav, setShowNav] = useState(false);
 
   useEffect(() => {
+    // Aseguramos que al cargar la página siempre esté en la parte superior
+    window.scrollTo(0, 0);
+
     const handleScroll = () => {
       if (window.scrollY > 50) {
         controls.start({ opacity: 0 });
