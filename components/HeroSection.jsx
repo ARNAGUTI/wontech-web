@@ -14,7 +14,7 @@ function PureChatHeader({
   selectedModelId,
   selectedVisibilityType,
   isReadonly,
-  session
+  session,
 }) {
   const router = useRouter();
   const { width: windowWidth } = useWindowSize();
