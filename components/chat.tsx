@@ -108,7 +108,7 @@ const Chat = ({
       <Messages
         chatId={id}
         status={status}
-        votes={null}
+        votes={[]}     {/* ✅ Pasamos un array vacío en lugar de null */}
         messages={messages}
         setMessages={setMessages}
         reload={reload}
