@@ -3,7 +3,18 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import HeroSection from '@/components/HeroSection';
-import Chat from '@/components/chat'; // Importa el chat directamente
+import Chat from '@/components/chat';
+import { Session } from 'next-auth';
+
+const emptySession: Session = {
+  user: {
+    id: '',
+    name: null,
+    email: null,
+    image: null,
+  },
+  expires: '',
+};
 
 export default function HomePage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -49,29 +60,19 @@ export default function HomePage() {
               className="rounded-lg"
             />
           </div>
-
-          <div className="space-y-6">
-            <Image
-              src="/images/lateral.jpg"
-              width={400}
-              height={250}
-              alt="Imagen lateral"
-              className="rounded-lg"
-            />
-          </div>
         </div>
       </main>
 
-      {/* 👇 Aquí es donde agregamos el Chat */}
+      {/* Chat integrado en el HomePage */}
       <div id="section3" className="bg-gray-900 text-white p-8">
         <h2 className="text-3xl font-bold mb-4 text-center">💬 Chat en vivo</h2>
         <Chat
-          id="general"  // Puedes cambiar esto por un ID si quieres un historial
-          initialMessages={[]} // Aquí podrías pasar mensajes si quieres
+          id="general"
+          initialMessages={[]}
           initialChatModel="gpt-4"
           initialVisibilityType="public"
           isReadonly={false}
-          session={null}
+          session={emptySession}
           autoResume={false}
         />
       </div>
