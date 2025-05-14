@@ -8,10 +8,10 @@ const HeroSection = () => {
   const [showNav, setShowNav] = useState(false);
 
   useEffect(() => {
-    // Evitar el scroll automático al cargar
-    document.body.style.overflow = 'hidden';
-
-    window.scrollTo(0, 0); // Aseguramos que esté en el top
+    // Forzamos el scroll al top al cargar
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
 
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -24,11 +24,7 @@ const HeroSection = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.body.style.overflow = 'auto'; // Restaurar scroll
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [controls]);
 
   return (
