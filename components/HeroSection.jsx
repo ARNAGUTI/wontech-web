@@ -11,6 +11,7 @@ import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { VisibilitySelector } from './visibility-selector';
 import type { Session } from 'next-auth';
+import type { VisibilityType } from './visibility-selector'; // ✅ Importación añadida
 
 function PureChatHeader({
   chatId,
