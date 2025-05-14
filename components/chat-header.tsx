@@ -13,10 +13,14 @@ import { VisibilitySelector, VisibilityType } from './visibility-selector'; // �
 interface ChatHeaderProps {
   chatId: string;
   selectedModelId: string;
-  selectedVisibilityType: VisibilityType; // ✅ Ajustado al tipo correcto
+  selectedVisibilityType: string; // Dejamos string porque puede venir de una API
   isReadonly: boolean;
   session: any; // Puedes ajustar el tipo si conoces su estructura
 }
+
+// ✅ Validación del tipo para evitar errores
+const isValidVisibility = (value: string): value is VisibilityType =>
+  value === 'private' || value === 'public';
 
 function PureChatHeader({
   chatId,
@@ -36,6 +40,11 @@ function PureChatHeader({
   } catch (error) {
     console.warn("Sidebar context is not available in this route");
   }
+
+  // ✅ Verificamos que el valor sea válido; si no, usamos 'private' por defecto
+  const visibilityToRender: VisibilityType = isValidVisibility(selectedVisibilityType)
+    ? selectedVisibilityType
+    : 'private';
 
   return (
     <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
@@ -71,7 +80,7 @@ function PureChatHeader({
       {!isReadonly && (
         <VisibilitySelector
           chatId={chatId}
-          selectedVisibilityType={selectedVisibilityType} // ✅ Ahora tiene el tipo correcto
+          selectedVisibilityType={visibilityToRender} // ✅ Validado antes de renderizar
           className="order-1 md:order-3"
         />
       )}
