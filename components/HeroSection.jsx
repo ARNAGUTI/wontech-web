@@ -1,58 +1,97 @@
-import { useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useWindowSize } from 'usehooks-ts';
+import { ModelSelector } from '@/components/model-selector';
+import { SidebarToggle } from '@/components/sidebar-toggle';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { PlusIcon, VercelIcon } from './icons';
+import { memo } from 'react';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { type VisibilityType, VisibilitySelector } from './visibility-selector';
+import type { Session } from 'next-auth';
 
-const HeroSection = () => {
-  const controls = useAnimation();
-  const [showNav, setShowNav] = useState(false);
+function PureChatHeader({
+  chatId,
+  selectedModelId,
+  selectedVisibilityType,
+  isReadonly,
+  session,
+}: {
+  chatId: string;
+  selectedModelId: string;
+  selectedVisibilityType: VisibilityType;
+  isReadonly: boolean;
+  session: Session | null;
+}) {
+  const router = useRouter();
+  const { width: windowWidth } = useWindowSize();
 
-  useEffect(() => {
-    // Forzamos el scroll al top al cargar
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
-    }
-
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        controls.start({ opacity: 0 });
-        setShowNav(true);
-      } else {
-        controls.start({ opacity: 1 });
-        setShowNav(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [controls]);
+  // ✅ Intentamos cargar el contexto solo si está disponible
+  let open = false;
+  try {
+    const sidebar = require('@/components/ui/sidebar');
+    open = sidebar.useSidebar().open;
+  } catch (error) {
+    console.warn("Sidebar context is not available in this route");
+  }
 
   return (
-    <div className="relative h-screen w-full bg-[url('/hero-image.jpg')] bg-cover bg-center overflow-hidden">
-      <motion.div 
-        className="absolute inset-0 flex items-center justify-center bg-black/60"
-        animate={controls}
-      >
-        <div className="text-center text-white space-y-4">
-          <h1 className="text-5xl font-bold">Bienvenido a tu Plataforma</h1>
-          <p className="text-lg">Explora nuestras soluciones tecnológicas</p>
-          <Button variant="default" className="mt-4">Saber más</Button>
-        </div>
-      </motion.div>
-      <div className="absolute bottom-8 w-full flex justify-center">
-        <ChevronDown className="animate-bounce text-white" size={32} />
-      </div>
-      {showNav && (
-        <div className="fixed top-0 left-0 w-full bg-black/75 p-4 z-50">
-          <nav className="flex justify-around text-white">
-            <a href="#section1">Sección 1</a>
-            <a href="#section2">Sección 2</a>
-            <a href="#section3">Sección 3</a>
-          </nav>
-        </div>
-      )}
-    </div>
-  );
-};
+    <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
+      {open && <SidebarToggle />}
 
-export default HeroSection;
+      {(!open || windowWidth < 768) && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              className="order-2 md:order-1 md:px-2 px-2 md:h-fit ml-auto md:ml-0"
+              onClick={() => {
+                router.push('/');
+                router.refresh();
+              }}
+            >
+              <PlusIcon />
+              <span className="md:sr-only">New Chat</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>New Chat</TooltipContent>
+        </Tooltip>
+      )}
+
+      {!isReadonly && (
+        <ModelSelector
+          session={session}
+          selectedModelId={selectedModelId}
+          className="order-1 md:order-2"
+        />
+      )}
+
+      {!isReadonly && (
+        <VisibilitySelector
+          chatId={chatId}
+          selectedVisibilityType={selectedVisibilityType}
+          className="order-1 md:order-3"
+        />
+      )}
+
+      <Button
+        className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 hidden md:flex py-1.5 px-2 h-fit md:h-[34px] order-4 md:ml-auto"
+        asChild
+      >
+        <Link
+          href={`https://vercel.com/new/clone?repository-url=https://github.com/vercel/ai-chatbot&env=AUTH_SECRET&envDescription=Learn more about how to get the API Keys for the application&envLink=https://github.com/vercel/ai-chatbot/blob/main/.env.example&demo-title=AI Chatbot&demo-description=An Open-Source AI Chatbot Template Built With Next.js and the AI SDK by Vercel.&demo-url=https://chat.vercel.ai&products=[{"type":"integration","protocol":"ai","productSlug":"grok","integrationSlug":"xai"},{"type":"integration","protocol":"storage","productSlug":"neon","integrationSlug":"neon"},{"type":"blob"}]`}
+          target="_noblank"
+        >
+          <VercelIcon size={16} />
+          Deploy with Vercel
+        </Link>
+      </Button>
+    </header>
+  );
+}
+
+export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
+  return prevProps.selectedModelId === nextProps.selectedModelId;
+});
