@@ -2,9 +2,10 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import FloatingChat from "@/components/FloatingChat";
+import FloatingChat from "@/components/FloatingChat"; // Este es el flotante que ya tenías
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
+import HomePage from '@/app/HomePage'; // ✅ Importamos el HomePage aquí
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -48,11 +49,11 @@ const THEME_COLOR_SCRIPT = `\
   updateThemeColor();
 })();`;
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="es"
@@ -74,10 +75,10 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Toaster position="top-center" />
-          <SessionProvider>{children}</SessionProvider>
-
-          {/* ✅ Aquí insertamos el botón flotante del asistente */}
-          <FloatingChat />
+          <SessionProvider>
+            <HomePage />  {/* ✅ Aquí cargamos el HomePage directamente */}
+            <FloatingChat /> {/* ✅ Este se mantiene flotante */}
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>
