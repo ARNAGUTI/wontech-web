@@ -5,7 +5,10 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 // ✅ Carga dinámica del componente para evitar el error y corregir alias
-const HeroSection = dynamic(() => import('../components/HeroSection'), { ssr: false });
+const HeroSection = dynamic(() => import('../components/HeroSection'), { 
+  ssr: false,
+  loading: () => <div>Cargando HeroSection...</div>
+});
 
 export default function HomePage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -35,6 +38,7 @@ export default function HomePage() {
             height={200}
             alt="Foto 1"
             className="rounded-lg"
+            onError={() => console.log('❌ Error al cargar la imagen foto1.jpg')}
           />
         </div>
 
@@ -50,6 +54,7 @@ export default function HomePage() {
             height={200}
             alt="Foto 2"
             className="rounded-lg"
+            onError={() => console.log('❌ Error al cargar la imagen foto2.jpg')}
           />
         </div>
 
@@ -62,6 +67,7 @@ export default function HomePage() {
             height={400}
             alt="Foto grande"
             className="rounded-lg w-full object-cover"
+            onError={() => console.log('❌ Error al cargar la imagen foto-grande.jpg')}
           />
         </div>
 
@@ -69,4 +75,3 @@ export default function HomePage() {
     </>
   );
 }
-
