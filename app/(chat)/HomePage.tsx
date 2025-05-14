@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import HeroSection from '@/components/HeroSection'; // Aquí se importa el componente correctamente
+import HeroSection from '@/components/HeroSection';
 
 export default function HomePage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -69,6 +69,7 @@ export default function HomePage() {
                 title="Asistente"
                 sandbox="allow-scripts allow-same-origin allow-popups"
                 loading="lazy"
+                style={{ minHeight: '400px' }} // Evita cambios bruscos de tamaño
               />
             </div>
           </div>
