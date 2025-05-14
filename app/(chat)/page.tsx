@@ -3,8 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface Message {
+  text: string;
+  user: string;
+}
+
 const ChatPage = () => {
-  const [messages, setMessages] = useState([]);
+  // 🔍 Definimos el tipo de datos en el estado
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const router = useRouter();
 
@@ -15,6 +21,7 @@ const ChatPage = () => {
 
   const sendMessage = () => {
     if (input.trim() === '') return;
+    // 🔍 Aquí no dará error, porque el estado está tipado correctamente
     setMessages([...messages, { text: input, user: 'Yo' }]);
     setInput('');
   };
