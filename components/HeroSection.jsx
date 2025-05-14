@@ -10,8 +10,8 @@ import { PlusIcon, VercelIcon } from './icons';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { VisibilitySelector } from './visibility-selector';
-import type { Session } from 'next-auth';
-import type { VisibilityType } from './visibility-selector'; // ✅ Importación añadida
+import { Session } from 'next-auth'; // ✅ Importación corregida para archivos JSX
+import { VisibilityType } from './visibility-selector'; // ✅ Importación corregida para archivos JSX
 
 function PureChatHeader({
   chatId,
