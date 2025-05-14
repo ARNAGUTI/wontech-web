@@ -173,3 +173,4 @@ export function Chat({
     </>
   );
 }
+export default Chat;
