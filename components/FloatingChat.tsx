@@ -3,11 +3,7 @@
 import Chat from '@/components/chat';
 import { useState } from 'react';
 import { Session } from 'next-auth';
-
-interface Message {
-  text: string;
-  user: string;
-}
+import type { UIMessage } from 'ai';
 
 const emptySession: Session = {
   user: {
@@ -15,13 +11,27 @@ const emptySession: Session = {
     name: null,
     email: null,
     image: null,
-    type: 'guest', // 👈 Solución aplicada (añadido el tipo)
+    type: 'guest',
   },
   expires: '',
 };
 
 const FloatingChat = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  // ✅ Ahora el tipo es UIMessage, no Message
+  const [messages, setMessages] = useState<UIMessage[]>([
+    {
+      id: '1',
+      content: '¡Bienvenido al chat!',
+      role: 'assistant',
+      parts: [
+        {
+          type: 'text',
+          content: '¡Bienvenido al chat!',
+        },
+      ],
+      createdAt: new Date(),
+    },
+  ]);
 
   return (
     <div className="fixed right-4 bottom-4 w-[400px] h-[600px] bg-gray-900 rounded-lg shadow-lg overflow-hidden">
