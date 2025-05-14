@@ -49,5 +49,19 @@ const HeroSection = () => {
     </div>
   );
 };
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY > 50) {
+      controls.start({ opacity: 0 });
+      setShowNav(true);
+    } else {
+      controls.start({ opacity: 1 });
+      setShowNav(false);
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, [controls]);
 
 export default HeroSection;
