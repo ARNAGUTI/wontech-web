@@ -3,14 +3,15 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import HeroSection from '@/components/HeroSection';
+import Chat from '@/components/chat'; // Importa el chat directamente
 
 export default function HomePage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      window.history.scrollRestoration = 'manual'; // Evita restaurar el scroll
-      window.scrollTo(0, 0); // Fuerza al top al cargar
+      window.history.scrollRestoration = 'manual';
+      window.scrollTo(0, 0);
     }
   }, []);
 
@@ -21,14 +22,11 @@ export default function HomePage() {
         <h1 className="text-5xl font-bold text-center mb-12">TÍTULO DE TU WEB</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Columna 1 */}
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Texto de presentación</h2>
-              <p className="text-gray-400">
-                Aquí puedes escribir algo introductorio sobre tu servicio o IA.
-              </p>
-            </div>
+            <h2 className="text-xl font-semibold">Texto de presentación</h2>
+            <p className="text-gray-400">
+              Aquí puedes escribir algo introductorio sobre tu servicio o IA.
+            </p>
             <Image
               src="/images/foto1.jpg"
               width={200}
@@ -38,14 +36,11 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Columna 2 */}
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Más información</h2>
-              <p className="text-gray-400">
-                Otra sección de texto o características.
-              </p>
-            </div>
+            <h2 className="text-xl font-semibold">Más información</h2>
+            <p className="text-gray-400">
+              Otra sección de texto o características.
+            </p>
             <Image
               src="/images/foto2.jpg"
               width={200}
@@ -55,7 +50,6 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Columna 3 - Sidebar */}
           <div className="space-y-6">
             <Image
               src="/images/lateral.jpg"
@@ -64,27 +58,23 @@ export default function HomePage() {
               alt="Imagen lateral"
               className="rounded-lg"
             />
-
-            <div className="bg-white text-black rounded-lg shadow p-4 h-[500px] overflow-hidden">
-              <h3 className="text-lg font-bold mb-2">Asistente IA</h3>
-              {!iframeLoaded && (
-                <p className="text-center text-gray-500">Cargando chat...</p>
-              )}
-              <iframe
-                src="/embed"
-                className="w-full h-full border-none rounded-md"
-                title="Asistente"
-                sandbox="allow-scripts allow-same-origin allow-popups"
-                loading="lazy"
-                style={{ minHeight: '400px' }}
-                onLoad={() => {
-                  window.scrollTo({ top: 0, behavior: 'instant' });
-                }}
-              />
-            </div>
           </div>
         </div>
       </main>
+
+      {/* 👇 Aquí es donde agregamos el Chat */}
+      <div id="section3" className="bg-gray-900 text-white p-8">
+        <h2 className="text-3xl font-bold mb-4 text-center">💬 Chat en vivo</h2>
+        <Chat
+          id="general"  // Puedes cambiar esto por un ID si quieres un historial
+          initialMessages={[]} // Aquí podrías pasar mensajes si quieres
+          initialChatModel="gpt-4"
+          initialVisibilityType="public"
+          isReadonly={false}
+          session={null}
+          autoResume={false}
+        />
+      </div>
     </>
   );
 }
