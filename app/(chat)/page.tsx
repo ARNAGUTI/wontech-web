@@ -65,11 +65,11 @@ export default function HomePage() {
               )}
               <iframe
                 src="/embed"
-                className="size-full border-none rounded-md"
+                className="w-full h-full border-none rounded-md"
                 title="Asistente"
                 sandbox="allow-scripts allow-same-origin allow-popups"
                 loading="lazy"
-                style={{ minHeight: '400px' }} // Evita cambios bruscos de tamaño
+                style={{ minHeight: '400px' }}
               />
             </div>
           </div>
