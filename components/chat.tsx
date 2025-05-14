@@ -77,11 +77,12 @@ const Chat = ({
     },
   });
 
-  useEffect(() => {
-    if (autoResume) {
-      experimental_resume();
-    }
-  }, []);
+useEffect(() => {
+  if (autoResume) {
+    experimental_resume();
+  }
+}, [autoResume, experimental_resume]);
+
 
   return (
     <div className="flex flex-col min-w-0 h-dvh bg-background">
