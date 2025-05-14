@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useWindowSize } from 'usehooks-ts';
@@ -10,21 +8,13 @@ import { PlusIcon, VercelIcon } from './icons';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { VisibilitySelector } from './visibility-selector';
-import { Session } from 'next-auth'; // ✅ Importación corregida para archivos JSX
-import { VisibilityType } from './visibility-selector'; // ✅ Importación corregida para archivos JSX
 
 function PureChatHeader({
   chatId,
   selectedModelId,
   selectedVisibilityType,
   isReadonly,
-  session,
-}: {
-  chatId: string;
-  selectedModelId: string;
-  selectedVisibilityType: VisibilityType;
-  isReadonly: boolean;
-  session: Session | null;
+  session
 }) {
   const router = useRouter();
   const { width: windowWidth } = useWindowSize();
