@@ -12,6 +12,7 @@ const emptySession: Session = {
     name: null,
     email: null,
     image: null,
+    type: 'guest', // 👈 Solución aplicada
   },
   expires: '',
 };
