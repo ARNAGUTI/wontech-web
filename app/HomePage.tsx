@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
-// ✅ Carga dinámica del componente para evitar el error
-const HeroSection = dynamic(() => import('@/components/HeroSection'), { ssr: false });
+// ✅ Carga dinámica del componente para evitar el error y corregir alias
+const HeroSection = dynamic(() => import('../components/HeroSection'), { ssr: false });
 
 export default function HomePage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -15,6 +15,7 @@ export default function HomePage() {
       window.history.scrollRestoration = 'manual';
       window.scrollTo(0, 0);
     }
+    console.log('HeroSection cargado correctamente');
   }, []);
 
   return (
@@ -68,3 +69,4 @@ export default function HomePage() {
     </>
   );
 }
+
