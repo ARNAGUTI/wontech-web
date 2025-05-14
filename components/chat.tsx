@@ -77,14 +77,12 @@ const Chat = ({
     },
   });
 
-  // ✅ El efecto de reanudación
   useEffect(() => {
     if (autoResume) {
       experimental_resume();
     }
   }, [autoResume, experimental_resume]);
 
-  // ✅ Sesión para el header, si está en null, ponemos un usuario genérico
   const safeSession = session ?? {
     user: {
       id: '',
@@ -96,16 +94,20 @@ const Chat = ({
     expires: '',
   };
 
-  // ✅ Retorno corregido
   return (
     <div className="flex flex-col min-w-0 h-dvh bg-background">
-      <ChatHeader
-        chatId={id}
-        selectedModelId={initialChatModel}
-        selectedVisibilityType={initialVisibilityType}
-        isReadonly={isReadonly}
-        session={safeSession}
-      />
+      {/* ✅ Verificación de la importación */}
+      {ChatHeader ? (
+        <ChatHeader
+          chatId={id}
+          selectedModelId={initialChatModel}
+          selectedVisibilityType={initialVisibilityType}
+          isReadonly={isReadonly}
+          session={safeSession}
+        />
+      ) : (
+        <div>Error: ChatHeader no está correctamente importado</div>
+      )}
 
       <Messages
         chatId={id}
