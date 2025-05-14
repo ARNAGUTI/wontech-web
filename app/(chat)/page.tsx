@@ -1,80 +1,50 @@
 'use client';
 
-import Image from 'next/image';
-import { useState } from 'react';
-import HeroSection from '@/components/HeroSection';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function HomePage() {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
+const ChatPage = () => {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log("Chat loaded");
+    // Aquí puedes cargar mensajes anteriores, si tienes backend.
+  }, []);
+
+  const sendMessage = () => {
+    if (input.trim() === '') return;
+    setMessages([...messages, { text: input, user: 'Yo' }]);
+    setInput('');
+  };
 
   return (
-    <>
-      <HeroSection />
-      <main id="section1" className="min-h-screen bg-gray-950 text-white p-12">
-        <h1 className="text-5xl font-bold text-center mb-12">TÍTULO DE TU WEB</h1>
+    <main className="min-h-screen bg-gray-800 text-white p-8">
+      <h1 className="text-4xl font-bold mb-4">Chat</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Columna 1 */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Texto de presentación</h2>
-              <p className="text-gray-400">
-                Aquí puedes escribir algo introductorio sobre tu servicio o IA.
-              </p>
-            </div>
-            <Image
-              src="/images/foto1.jpg"
-              width={200}
-              height={200}
-              alt="Foto 1"
-              className="rounded-lg"
-            />
+      <div className="bg-gray-700 p-4 rounded-lg mb-4 max-h-[500px] overflow-y-auto">
+        {messages.map((msg, index) => (
+          <div key={index} className="mb-2">
+            <span className="text-sm text-gray-400">{msg.user}:</span>
+            <p className="text-base">{msg.text}</p>
           </div>
+        ))}
+      </div>
 
-          {/* Columna 2 */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Más información</h2>
-              <p className="text-gray-400">
-                Otra sección de texto o características.
-              </p>
-            </div>
-            <Image
-              src="/images/foto2.jpg"
-              width={200}
-              height={200}
-              alt="Foto 2"
-              className="rounded-lg"
-            />
-          </div>
-
-          {/* Columna 3 - Sidebar */}
-          <div className="space-y-6">
-            <Image
-              src="/images/lateral.jpg"
-              width={400}
-              height={250}
-              alt="Imagen lateral"
-              className="rounded-lg"
-            />
-
-            <div className="bg-white text-black rounded-lg shadow p-4 h-[500px] overflow-hidden">
-              <h3 className="text-lg font-bold mb-2">Asistente IA</h3>
-              {!iframeLoaded && (
-                <p className="text-center text-gray-500">Cargando chat...</p>
-              )}
-              <iframe
-                src="/embed"
-                className="w-full h-full border-none rounded-md"
-                title="Asistente"
-                sandbox="allow-scripts allow-same-origin allow-popups"
-                loading="lazy"
-                style={{ minHeight: '400px' }}
-              />
-            </div>
-          </div>
-        </div>
-      </main>
-    </>
+      <div className="flex gap-2">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="w-full p-2 rounded-lg text-black"
+          placeholder="Escribe un mensaje..."
+        />
+        <button onClick={sendMessage} className="bg-blue-500 p-2 rounded-lg">
+          Enviar
+        </button>
+      </div>
+    </main>
   );
-}
+};
+
+export default ChatPage;
