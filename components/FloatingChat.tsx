@@ -30,7 +30,7 @@ const FloatingChat = () => {
         initialChatModel="gpt-4"
         initialVisibilityType="public"
         isReadonly={false}
-        session={emptySession} // 🔍 Aquí lo paso vacío
+        session={emptySession}
         autoResume={false}
       />
     </div>
