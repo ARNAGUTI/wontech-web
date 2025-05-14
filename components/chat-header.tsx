@@ -7,13 +7,13 @@ import { Button } from '@/components/ui/button';
 import { PlusIcon, VercelIcon } from './icons';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { VisibilitySelector } from './visibility-selector';
+import { VisibilitySelector, VisibilityType } from './visibility-selector'; // ✅ Importamos el tipo VisibilityType
 
 // ✅ Definición de tipos para los props
 interface ChatHeaderProps {
   chatId: string;
   selectedModelId: string;
-  selectedVisibilityType: string;
+  selectedVisibilityType: VisibilityType; // ✅ Ajustado al tipo correcto
   isReadonly: boolean;
   session: any; // Puedes ajustar el tipo si conoces su estructura
 }
@@ -71,7 +71,7 @@ function PureChatHeader({
       {!isReadonly && (
         <VisibilitySelector
           chatId={chatId}
-          selectedVisibilityType={selectedVisibilityType}
+          selectedVisibilityType={selectedVisibilityType} // ✅ Ahora tiene el tipo correcto
           className="order-1 md:order-3"
         />
       )}
