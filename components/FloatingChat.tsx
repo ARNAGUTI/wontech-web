@@ -1,28 +1,19 @@
-'use client';
-import { useState } from "react";
+import Chat from '@/components/chat';
 
-export default function FloatingChat() {
-  const [isOpen, setIsOpen] = useState(false);
-
+const FloatingChat = () => {
   return (
-    <div>
-      {/* Botón flotante */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg"
-      >
-        💬
-      </button>
-
-      {/* Ventana del chat usando iframe */}
-      {isOpen && (
-        <div className="fixed bottom-20 right-6 z-40 w-[350px] h-[500px] bg-white border shadow-xl rounded-xl overflow-hidden">
-          <iframe
-            src="/chat"
-            className="size-full border-none"
-          />
-        </div>
-      )}
+    <div className="fixed right-4 bottom-4 w-[400px] h-[600px] bg-gray-900 rounded-lg shadow-lg overflow-hidden">
+      <Chat
+        id="general"
+        initialMessages={[]}
+        initialChatModel="gpt-4"
+        initialVisibilityType="public"
+        isReadonly={false}
+        session={null}
+        autoResume={false}
+      />
     </div>
   );
-}
+};
+
+export default FloatingChat;
