@@ -26,7 +26,7 @@ const FloatingChat = () => {
       parts: [
         {
           type: 'text',
-          content: '¡Bienvenido al chat!',
+          text: '¡Bienvenido al chat!', // 🔍 Cambio de 'content' a 'text'
         },
       ],
       createdAt: new Date(),
