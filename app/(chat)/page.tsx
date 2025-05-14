@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import HeroSection from '@/components/HeroSection';
+import HeroSection from '@/components/HeroSection'; // Aquí se importa el componente correctamente
 
 export default function HomePage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
