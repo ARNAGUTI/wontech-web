@@ -65,7 +65,7 @@ export default function HomePage() {
               )}
               <iframe
                 src="/embed"
-                className="w-full h-full border-none rounded-md"
+                className="size-full border-none rounded-md"
                 title="Asistente"
                 sandbox="allow-scripts allow-same-origin allow-popups"
                 loading="lazy"
