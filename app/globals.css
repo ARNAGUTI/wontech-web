@@ -162,3 +162,44 @@
 .suggestion-highlight {
     @apply bg-blue-200 hover:bg-blue-300 dark:hover:bg-blue-400/50 dark:text-blue-50 dark:bg-blue-500/40;
 }
+/* Estilo para el FloatingChat */
+.fixed-chat {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 400px;
+  height: 600px;
+  background-color: var(--sidebar-background);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.fixed-chat.minimized {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.fixed-chat .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: var(--sidebar-primary);
+  color: var(--sidebar-primary-foreground);
+}
+
+.fixed-chat .header button {
+  background: transparent;
+  border: none;
+  color: var(--sidebar-primary-foreground);
+  cursor: pointer;
+}
+
+.fixed-chat .header button:hover {
+  color: var(--foreground);
+}
