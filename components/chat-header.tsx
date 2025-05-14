@@ -1,18 +1,13 @@
-'use client';
-
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useWindowSize } from 'usehooks-ts';
-
 import { ModelSelector } from '@/components/model-selector';
 import { SidebarToggle } from '@/components/sidebar-toggle';
 import { Button } from '@/components/ui/button';
 import { PlusIcon, VercelIcon } from './icons';
-import { useSidebar } from './ui/sidebar';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { type VisibilityType, VisibilitySelector } from './visibility-selector';
-import type { Session } from 'next-auth';
+import { VisibilitySelector } from './visibility-selector';
 
 function PureChatHeader({
   chatId,
@@ -20,21 +15,22 @@ function PureChatHeader({
   selectedVisibilityType,
   isReadonly,
   session,
-}: {
-  chatId: string;
-  selectedModelId: string;
-  selectedVisibilityType: VisibilityType;
-  isReadonly: boolean;
-  session: Session;
 }) {
   const router = useRouter();
-  const { open } = useSidebar();
-
   const { width: windowWidth } = useWindowSize();
+
+  // ✅ Intentamos cargar el contexto solo si está disponible
+  let open = false;
+  try {
+    const sidebar = require('@/components/ui/sidebar');
+    open = sidebar.useSidebar().open;
+  } catch (error) {
+    console.warn("Sidebar context is not available in this route");
+  }
 
   return (
     <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
-      <SidebarToggle />
+      {open && <SidebarToggle />}
 
       {(!open || windowWidth < 768) && (
         <Tooltip>
