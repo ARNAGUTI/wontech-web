@@ -83,58 +83,61 @@ const Chat = ({
     }
   }, [autoResume, experimental_resume]);
 
-  // 👇 Session "safe fallback"
+  // 👇 Sesión por defecto si es null
   const safeSession: Session = session ?? {
     user: {
       id: 'guest',
       name: 'Invitado',
       email: null,
       image: null,
-      type: 'guest', // Este valor es inventado, pero permite que no falle.
+      type: 'guest',
     },
-    expires: new Date().toISOString(), // Fecha futura para que no expire.
+    expires: new Date().toISOString(),
   };
 
+  // ✅ Retorno corregido
   return (
-    <div className="flex flex-col min-w-0 h-dvh bg-background">
-      <ChatHeader
-        chatId={id}
-        selectedModelId={initialChatModel}
-        selectedVisibilityType={initialVisibilityType}
-        isReadonly={isReadonly}
-        session={safeSession}
-      />
+    <>
+      <div className="flex flex-col min-w-0 h-dvh bg-background">
+        <ChatHeader
+          chatId={id}
+          selectedModelId={initialChatModel}
+          selectedVisibilityType={initialVisibilityType}
+          isReadonly={isReadonly}
+          session={safeSession}
+        />
 
-      <Messages
-        chatId={id}
-        status={status}
-        votes={[]} {/* 👈 Array vacío en lugar de null para evitar errores */}
-        messages={messages}
-        setMessages={setMessages}
-        reload={reload}
-        isReadonly={isReadonly}
-        isArtifactVisible={false}
-      />
+        <Messages
+          chatId={id}
+          status={status}
+          votes={[]} // 👈 Array vacío para evitar null
+          messages={messages}
+          setMessages={setMessages}
+          reload={reload}
+          isReadonly={isReadonly}
+          isArtifactVisible={false}
+        />
 
-      <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
-        {!isReadonly && (
-          <MultimodalInput
-            chatId={id}
-            input={input}
-            setInput={setInput}
-            handleSubmit={handleSubmit}
-            status={status}
-            stop={stop}
-            attachments={[]}
-            setAttachments={() => {}}
-            messages={messages}
-            setMessages={setMessages}
-            append={append}
-            selectedVisibilityType={visibilityType}
-          />
-        )}
-      </form>
-    </div>
+        <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
+          {!isReadonly && (
+            <MultimodalInput
+              chatId={id}
+              input={input}
+              setInput={setInput}
+              handleSubmit={handleSubmit}
+              status={status}
+              stop={stop}
+              attachments={[]}
+              setAttachments={() => {}}
+              messages={messages}
+              setMessages={setMessages}
+              append={append}
+              selectedVisibilityType={visibilityType}
+            />
+          )}
+        </form>
+      </div>
+    </>
   );
 };
 
