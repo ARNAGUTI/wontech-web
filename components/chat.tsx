@@ -83,36 +83,32 @@ const Chat = ({
     }
   }, [autoResume, experimental_resume]);
 
-  const safeSession = session ?? {
+  // 👇 Session "safe fallback"
+  const safeSession: Session = session ?? {
     user: {
-      id: '',
+      id: 'guest',
       name: 'Invitado',
       email: null,
       image: null,
-      type: 'guest',
+      type: 'guest', // Este valor es inventado, pero permite que no falle.
     },
-    expires: '',
+    expires: new Date().toISOString(), // Fecha futura para que no expire.
   };
 
   return (
     <div className="flex flex-col min-w-0 h-dvh bg-background">
-      {/* ✅ Verificación de la importación */}
-      {ChatHeader ? (
-        <ChatHeader
-          chatId={id}
-          selectedModelId={initialChatModel}
-          selectedVisibilityType={initialVisibilityType}
-          isReadonly={isReadonly}
-          session={safeSession}
-        />
-      ) : (
-        <div>Error: ChatHeader no está correctamente importado</div>
-      )}
+      <ChatHeader
+        chatId={id}
+        selectedModelId={initialChatModel}
+        selectedVisibilityType={initialVisibilityType}
+        isReadonly={isReadonly}
+        session={safeSession}
+      />
 
       <Messages
         chatId={id}
         status={status}
-        votes={[]} {/* 👈 Le pasamos un array vacío para que no falle */}
+        votes={[]} {/* 👈 Array vacío en lugar de null para evitar errores */}
         messages={messages}
         setMessages={setMessages}
         reload={reload}
