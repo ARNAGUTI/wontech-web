@@ -3,19 +3,6 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import HeroSection from '@/components/HeroSection';
-import Chat from '@/components/chat';
-import { Session } from 'next-auth';
-
-const emptySession: Session = {
-  user: {
-    id: '',
-    name: null,
-    email: null,
-    image: null,
-    type: 'guest', // 👈 Solución aplicada
-  },
-  expires: '',
-};
 
 export default function HomePage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -63,20 +50,6 @@ export default function HomePage() {
           </div>
         </div>
       </main>
-
-      {/* Chat integrado en el HomePage */}
-      <div id="section3" className="bg-gray-900 text-white p-8">
-        <h2 className="text-3xl font-bold mb-4 text-center">💬 Chat en vivo</h2>
-        <Chat
-          id="general"
-          initialMessages={[]}
-          initialChatModel="gpt-4"
-          initialVisibilityType="public"
-          isReadonly={false}
-          session={emptySession}
-          autoResume={false}
-        />
-      </div>
     </>
   );
 }
