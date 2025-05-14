@@ -2,11 +2,10 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import FloatingChat from "@/components/FloatingChat"; // Este es el flotante que ya tenías
+import FloatingChat from "@/components/FloatingChat";
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
-import HomePage from '@/app/HomePage'; // ✅ Importamos el HomePage aquí
-import { SidebarProvider } from '@/components/ui/sidebar'; // ✅ Importamos el provider
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -77,10 +76,9 @@ export default function RootLayout({
         >
           <Toaster position="top-center" />
           <SessionProvider>
-            <SidebarProvider> {/* 👈 Envolvemos aquí el SidebarProvider */}
-              <HomePage />
-              <FloatingChat />
+            <SidebarProvider>
               {children}
+              <FloatingChat /> {/* Chat siempre flotante */}
             </SidebarProvider>
           </SessionProvider>
         </ThemeProvider>
