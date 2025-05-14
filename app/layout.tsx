@@ -6,6 +6,7 @@ import FloatingChat from "@/components/FloatingChat"; // Este es el flotante que
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import HomePage from '@/app/HomePage'; // ✅ Importamos el HomePage aquí
+import { SidebarProvider } from '@/components/ui/sidebar'; // ✅ Importamos el provider
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -76,8 +77,11 @@ export default function RootLayout({
         >
           <Toaster position="top-center" />
           <SessionProvider>
-            <HomePage />  {/* ✅ Aquí cargamos el HomePage directamente */}
-            <FloatingChat /> {/* ✅ Este se mantiene flotante */}
+            <SidebarProvider> {/* 👈 Envolvemos aquí el SidebarProvider */}
+              <HomePage />
+              <FloatingChat />
+              {children}
+            </SidebarProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>
