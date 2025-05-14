@@ -8,8 +8,10 @@ const HeroSection = () => {
   const [showNav, setShowNav] = useState(false);
 
   useEffect(() => {
-    // Aseguramos que al cargar la página siempre esté en la parte superior
-    window.scrollTo(0, 0);
+    // Evitar el scroll automático al cargar
+    document.body.style.overflow = 'hidden';
+
+    window.scrollTo(0, 0); // Aseguramos que esté en el top
 
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -22,11 +24,15 @@ const HeroSection = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.body.style.overflow = 'auto'; // Restaurar scroll
+    };
   }, [controls]);
 
   return (
-    <div className="relative h-screen w-full bg-[url('/hero-image.jpg')] bg-cover bg-center">
+    <div className="relative h-screen w-full bg-[url('/hero-image.jpg')] bg-cover bg-center overflow-hidden">
       <motion.div 
         className="absolute inset-0 flex items-center justify-center bg-black/60"
         animate={controls}
