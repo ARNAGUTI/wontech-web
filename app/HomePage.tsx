@@ -1,5 +1,5 @@
 'use client';
-""import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
