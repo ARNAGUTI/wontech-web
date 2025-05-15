@@ -4,12 +4,12 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 
-const LandingPage = () => {
+const HomePage = () => {
   return (
-    <motion.div id="chat-widget" className="size-full">
-      {/* Aquí va el contenido del widget */}
-     </motion.div>
-        <div id="chat-widget" className="size-full">
+    <div className="w-full min-h-screen overflow-hidden relative">
+      {/* Título inicial */}
+      <motion.div 
+        className="w-full h-screen flex items-center justify-center bg-cover bg-center"
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
         transition={{ delay: 2, duration: 1 }}
@@ -43,9 +43,9 @@ const LandingPage = () => {
           </Card>
           <Card className="p-4 bg-gray-800 text-white">
             <h2 className="text-xl font-bold mb-2">Asistente IA con Chat</h2>
-            <div id="chat-widget" className="w-full h-full">
-              {/* Aquí se montará el asistente flotante */}
-            </div>
+            <motion.div id="chat-widget" className="size-full">
+              <p>Asistente IA cargando...</p>
+            </motion.div>
           </Card>
         </div>
       </motion.div>
@@ -53,4 +53,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default HomePage;
