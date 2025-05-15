@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 
-const LandingPage = () => {
+const HomePage = () => {
     return (
         <div className="w-full h-screen overflow-hidden relative">
             <motion.div 
@@ -46,5 +46,4 @@ const LandingPage = () => {
     );
 };
 
-export default LandingPage;
-""
+export default HomePage;
