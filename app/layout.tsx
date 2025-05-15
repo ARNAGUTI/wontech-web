@@ -31,7 +31,7 @@ export default function RootLayout({
           <Toaster position="top-center" />
           <SessionProvider>
             <SidebarProvider>
-              {children.length > 0 ? children : <HomePage />} 
+              {children && React.Children.count(children) > 0 ? children : <HomePage />} 
               <FloatingChat />
             </SidebarProvider>
           </SessionProvider>
