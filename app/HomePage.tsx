@@ -1,29 +1,45 @@
 'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-import AssistantChat from '@/components/AssistantChat'; // ✅ Importamos el componente
 
 const HomePage = () => {
+  const controls = useAnimation();
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleScroll = () => {
+    if (window.scrollY > 100) {
+      controls.start({ scale: 0.7, opacity: 0, transition: { duration: 0.5 } });
+      setIsVisible(false);
+    } else {
+      controls.start({ scale: 1, opacity: 1, transition: { duration: 0.5 } });
+      setIsVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="w-full min-h-screen overflow-hidden relative">
       {/* Título inicial */}
-      <motion.div 
+      <motion.div
         className="w-full h-screen flex items-center justify-center bg-cover bg-center"
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{ delay: 2, duration: 1 }}
+        initial={{ scale: 1, opacity: 1 }}
+        animate={controls}
       >
         <h1 className="text-5xl font-bold text-white">Bienvenido a Nuestra Web</h1>
       </motion.div>
 
       {/* Contenido principal */}
-      <motion.div 
+      <motion.div
         className="w-full min-h-screen grid grid-cols-3 gap-4 p-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
       >
         {/* Bloque de texto y foto */}
         <div className="col-span-2 grid grid-cols-2 gap-4">
@@ -42,9 +58,11 @@ const HomePage = () => {
           <Card className="p-4 bg-gray-800">
             <Image src="/images/lateral.jpg" alt="Imagen Lateral" width={400} height={500} className="rounded-lg" />
           </Card>
-          <Card className="p-4 h-full">
-            <h2 className="text-xl font-semibold mb-2">Asistente IA con Chat</h2>
-            <AssistantChat /> {/* Aquí lo integramos directamente */}
+          <Card className="p-4 bg-gray-800 text-white">
+            <h2 className="text-xl font-bold mb-2">Asistente IA con Chat</h2>
+            <motion.div id="chat-widget" className="size-full">
+              <p>Asistente IA cargando...</p>
+            </motion.div>
           </Card>
         </div>
       </motion.div>
