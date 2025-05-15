@@ -5,7 +5,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -29,9 +29,8 @@ export default function RootLayout({
         >
           <Toaster position="top-center" />
           <SessionProvider>
-            <SidebarProvider>
-              {children}
-            </SidebarProvider>
+            <Navbar />
+            {children}
           </SessionProvider>
         </ThemeProvider>
       </body>
