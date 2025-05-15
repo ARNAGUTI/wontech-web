@@ -6,9 +6,9 @@ import { Card } from '@/components/ui/card';
 
 const LandingPage = () => {
   return (
-    <div className="w-full min-h-screen overflow-hidden relative">
-      {/* Título inicial */}
-      <motion.div 
+    <motion.div id="chat-widget" className="size-full">
+      {/* Aquí va el contenido del widget */}
+     </motion.div>
         <div id="chat-widget" className="size-full">
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
