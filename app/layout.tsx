@@ -3,10 +3,9 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import Navbar from '@/app/components/Navbar';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import Navbar from '@/app/components/navbar'; // ✅ Import del nuevo navbar
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -30,10 +29,8 @@ export default function RootLayout({
         >
           <Toaster position="top-center" />
           <SessionProvider>
-            <SidebarProvider>
-              <Navbar />
-              {children}
-            </SidebarProvider>
+            <Navbar />
+            {children}
           </SessionProvider>
         </ThemeProvider>
       </body>
