@@ -1,77 +1,50 @@
 'use client';
-
+""import React from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import { Card } from '@/components/ui/card';
 
-// ✅ Carga dinámica del componente para evitar el error y corregir alias
-const HeroSection = dynamic(() => import('../components/HeroSection'), { 
-  ssr: false,
-  loading: () => <div>Cargando HeroSection...</div>
-});
+const LandingPage = () => {
+    return (
+        <div className="w-full h-screen overflow-hidden relative">
+            <motion.div 
+                className="w-full h-screen flex items-center justify-center bg-cover bg-center"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ delay: 2, duration: 1 }}
+            >
+                <h1 className="text-5xl font-bold text-white">Bienvenido a Nuestra Web</h1>
+            </motion.div>
 
-export default function HomePage() {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.history.scrollRestoration = 'manual';
-      window.scrollTo(0, 0);
-    }
-    console.log('HeroSection cargado correctamente');
-  }, []);
-
-  return (
-    <>
-      <HeroSection />
-      <main className="min-h-screen bg-gray-950 text-white p-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        {/* Columna 1 - Texto y Foto 1 */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold">Texto de presentación</h2>
-          <p className="text-gray-400">
-            Aquí puedes escribir algo introductorio sobre tu servicio o IA.
-          </p>
-          <Image
-            src="/images/foto1.jpg"
-            width={200}
-            height={200}
-            alt="Foto 1"
-            className="rounded-lg"
-            onError={() => console.log('❌ Error al cargar la imagen foto1.jpg')}
-          />
+            <motion.div 
+                className="w-full h-screen grid grid-cols-3 gap-4 p-8 opacity-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 3, duration: 1 }}
+            >
+                <div className="col-span-2 grid grid-cols-2 gap-4">
+                    <Card className="p-4">
+                        <h2 className="text-xl font-semibold mb-2">Texto Sección 1</h2>
+                        <Image src="/foto1.jpg" alt="Foto 1" width={400} height={300} className="rounded-lg" />
+                    </Card>
+                    <Card className="p-4">
+                        <h2 className="text-xl font-semibold mb-2">Texto Sección 2</h2>
+                        <Image src="/foto2.jpg" alt="Foto 2" width={400} height={300} className="rounded-lg" />
+                    </Card>
+                </div>
+                <div className="flex flex-col gap-4">
+                    <Card className="p-4">
+                        <Image src="/lateral.jpg" alt="Lateral" width={400} height={500} className="rounded-lg" />
+                    </Card>
+                    <Card className="p-4">
+                        <h2 className="text-xl font-semibold mb-2">Asistente IA con Chat</h2>
+                        <div id="chat-widget"></div>
+                    </Card>
+                </div>
+            </motion.div>
         </div>
+    );
+};
 
-        {/* Columna 2 - Texto y Foto 2 */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold">Más información</h2>
-          <p className="text-gray-400">
-            Otra sección de texto o características.
-          </p>
-          <Image
-            src="/images/foto2.jpg"
-            width={200}
-            height={200}
-            alt="Foto 2"
-            className="rounded-lg"
-            onError={() => console.log('❌ Error al cargar la imagen foto2.jpg')}
-          />
-        </div>
-
-        {/* Columna 3 - Foto grande */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold">Nuestros servicios</h2>
-          <Image
-            src="/images/foto-grande.jpg"
-            width={400}
-            height={400}
-            alt="Foto grande"
-            className="rounded-lg w-full object-cover"
-            onError={() => console.log('❌ Error al cargar la imagen foto-grande.jpg')}
-          />
-        </div>
-
-      </main>
-    </>
-  );
-}
+export default LandingPage;
+""
