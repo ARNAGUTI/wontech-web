@@ -3,11 +3,9 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import FloatingChat from "@/components/FloatingChat";
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import HomePage from './HomePage';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -32,8 +30,7 @@ export default function RootLayout({
           <Toaster position="top-center" />
           <SessionProvider>
             <SidebarProvider>
-              {children && React.Children.count(children) > 0 ? children : <HomePage />} 
-              <FloatingChat />
+              {children}
             </SidebarProvider>
           </SessionProvider>
         </ThemeProvider>
