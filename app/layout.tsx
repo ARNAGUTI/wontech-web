@@ -6,7 +6,7 @@ import FloatingChat from "@/components/FloatingChat";
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import HomePage from './HomePage'; // ✅ Importamos el componente HomePage
+import HomePage from './HomePage';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -31,8 +31,7 @@ export default function RootLayout({
           <Toaster position="top-center" />
           <SessionProvider>
             <SidebarProvider>
-              <HomePage />  {/* ✅ Forzamos que HomePage siempre se renderice */}
-              {children}
+              {children.length > 0 ? children : <HomePage />} 
               <FloatingChat />
             </SidebarProvider>
           </SessionProvider>
