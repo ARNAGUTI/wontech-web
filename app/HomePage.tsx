@@ -6,10 +6,10 @@ import { Card } from '@/components/ui/card';
 
 const LandingPage = () => {
   return (
-    <div className="w-full h-screen overflow-hidden relative">
+    <div className="w-full min-h-screen overflow-hidden relative">
       {/* Título inicial */}
       <motion.div 
-        className="w-full h-screen flex items-center justify-center bg-cover bg-center"
+        <div id="chat-widget" className="size-full">
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
         transition={{ delay: 2, duration: 1 }}
@@ -19,18 +19,18 @@ const LandingPage = () => {
 
       {/* Contenido principal */}
       <motion.div 
-        className="w-full h-screen grid grid-cols-3 gap-4 p-8 opacity-0"
+        className="w-full min-h-screen grid grid-cols-3 gap-4 p-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3, duration: 1 }}
       >
         {/* Bloque de texto y foto */}
         <div className="col-span-2 grid grid-cols-2 gap-4">
-          <Card className="p-4">
+          <Card className="p-4 bg-gray-800 text-white">
             <h2 className="text-2xl font-bold mb-4">Texto Sección 1</h2>
             <Image src="/foto1.jpg" alt="Foto 1" width={500} height={300} className="rounded-lg" />
           </Card>
-          <Card className="p-4">
+          <Card className="p-4 bg-gray-800 text-white">
             <h2 className="text-2xl font-bold mb-4">Texto Sección 2</h2>
             <Image src="/foto2.jpg" alt="Foto 2" width={500} height={300} className="rounded-lg" />
           </Card>
@@ -38,10 +38,10 @@ const LandingPage = () => {
 
         {/* Imagen grande y Asistente */}
         <div className="flex flex-col gap-4">
-          <Card className="p-4">
+          <Card className="p-4 bg-gray-800">
             <Image src="/lateral.jpg" alt="Imagen Lateral" width={400} height={500} className="rounded-lg" />
           </Card>
-          <Card className="p-4 flex items-center justify-center">
+          <Card className="p-4 bg-gray-800 text-white">
             <h2 className="text-xl font-bold mb-2">Asistente IA con Chat</h2>
             <div id="chat-widget" className="w-full h-full">
               {/* Aquí se montará el asistente flotante */}
