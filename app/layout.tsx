@@ -5,7 +5,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
-import Navbar from '@/app/components/navbar'; // ✅ Import del nuevo navbar
+import Navbar from '@/app/components/Navbar'; // ✅ Import del nuevo navbar
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
