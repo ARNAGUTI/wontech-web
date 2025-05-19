@@ -5,7 +5,7 @@ import ChatHeader from '@/app/components/Chat/ChatHeader';
 import ChatMessage from '@/app/components/Chat/ChatMessages';
 import ChatInput from '@/app/components/Chat/ChatInput';
 import { Message } from '@/app/types/chat';
-import { sendMessageToOpenAI } from '@/services/openAI';
+import { sendMessageToOpenAI } from '@/app/services/openAI';
 import { Loader } from 'lucide-react';
 
 const Index = () => {
