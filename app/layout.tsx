@@ -1,11 +1,12 @@
 import React from 'react';
-import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
-import Navbar from '@/app/components/Navbar'; // ✅ Import del nuevo navbar
+import Navbar from '@/app/components/Navbar'; 
+import { Toaster } from '@/app/components/ui/toaster';    // ✅ Import correcto del Toaster
+import { ToastProvider } from '@/app/hooks/use-toast';    // ✅ Import del Provider
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -27,10 +28,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Toaster position="top-center" />
           <SessionProvider>
             <Navbar />
-            {children}
+            <ToastProvider>          {/* ✅ Envolvemos en el Provider para que los toasts funcionen */}
+              <Toaster />            {/* ✅ Nuestro Toaster global */}
+              {children}
+            </ToastProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>
