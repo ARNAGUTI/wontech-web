@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-import ChatContainer from '@/app/components/Chat/ChatContainer';
+import ChatContainer from '@/app/components/Chat/ChatContenido';
 
 const HomePage = () => {
   const controls = useAnimation();
