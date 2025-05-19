@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useToast } from '@/app/components/ui/use-toast';
+import { useToast } from '@/app/hook/use-toast';
 import { v4 as uuidv4 } from 'uuid';
 import ChatHeader from '@/app/components/Chat/ChatHeader';
 import ChatMessage from '@/app/components/Chat/ChatMessages';
