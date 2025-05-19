@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
+import ChatContainer from '@/app/components/Chat/ChatContainer';
 
 const HomePage = () => {
   const controls = useAnimation();
@@ -58,10 +59,10 @@ const HomePage = () => {
           <Card className="p-4 bg-gray-800">
             <Image src="/images/lateral.jpg" alt="Imagen Lateral" width={400} height={500} className="rounded-lg" />
           </Card>
-          <Card className="p-4 bg-gray-800 text-white">
+          <Card className="p-4 bg-gray-800 text-white h-full">
             <h2 className="text-xl font-bold mb-2">Asistente IA con Chat</h2>
             <motion.div id="chat-widget" className="size-full">
-              <p>Asistente IA cargando...</p>
+              <ChatContainer /> {/* ✅ Aquí está el chat integrado */}
             </motion.div>
           </Card>
         </div>
