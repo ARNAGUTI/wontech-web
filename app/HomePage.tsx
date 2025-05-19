@@ -45,11 +45,11 @@ const HomePage = () => {
         <div className="col-span-2 grid grid-cols-2 gap-4">
           <Card className="p-4 bg-gray-800 text-white">
             <h2 className="text-2xl font-bold mb-4">Texto Sección 1</h2>
-            <Image src="/images/foto1.jpg" alt="Foto 1" width={500} height={300} className="rounded-lg" />
+            <Image src="/images/foto1.jpeg" alt="Foto 1" width={500} height={300} className="rounded-lg" />
           </Card>
           <Card className="p-4 bg-gray-800 text-white">
             <h2 className="text-2xl font-bold mb-4">Texto Sección 2</h2>
-            <Image src="/images/foto2.jpg" alt="Foto 2" width={500} height={300} className="rounded-lg" />
+            <Image src="/images/foto2.jpeg" alt="Foto 2" width={500} height={300} className="rounded-lg" />
           </Card>
         </div>
 
