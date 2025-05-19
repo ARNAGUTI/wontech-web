@@ -1,21 +1,25 @@
 import Link from 'next/link';
 
-const Navbar = () => {
+export default function Navbar() {
   return (
-    <nav className="w-full bg-gray-900 text-white py-3 px-8 flex justify-between items-center fixed top-0 z-50">
-      <Link href="/" className="text-2xl font-bold hover:text-gray-400 transition">
-        Wontech Web
-      </Link>
-      <div className="flex gap-8 text-lg">
-        <Link href="/page2" className="hover:text-gray-400 transition">
+    <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
+      <div className="flex-1">
+        <Link href="/" className="text-2xl font-bold">
+          Wontech Web
+        </Link>
+      </div>
+      <div className="flex-1 flex justify-center">
+        <Link href="/page2" className="mx-4">
           Página 2
         </Link>
-        <Link href="/page3" className="hover:text-gray-400 transition">
+      </div>
+      <div className="flex-1 flex justify-end">
+        <Link href="/page3" className="mx-4">
           Página 3
         </Link>
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;
