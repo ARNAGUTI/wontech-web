@@ -61,7 +61,7 @@ const Index = () => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error:', error);
-      toast({
+      addToast({
         title: "Error",
         description: `${error instanceof Error ? error.message : "Se produjo un error al procesar su consulta. Por favor inténtelo nuevamente."}`,
         variant: "destructive",
