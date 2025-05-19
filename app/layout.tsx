@@ -6,7 +6,7 @@ import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Navbar from '@/app/components/Navbar'; 
 import { Toaster } from '@/app/components/ui/toaster';    // ✅ Import correcto del Toaster
-import { ToastProvider } from '@/app/hooks/use-toast';    // ✅ Import del Provider
+import { ToastProvider } from '@/app/hook/use-toast';    // ✅ Import del Provider
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
