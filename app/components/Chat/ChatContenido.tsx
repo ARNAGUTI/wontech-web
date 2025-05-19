@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { v4 as uuidv4 } from 'uuid';
 import ChatHeader from '@/app/components/Chat/ChatHeader';
-import ChatMessage from '@/app/components/Chat/ChatMessage';
+import ChatMessage from '@/app/components/Chat/ChatMessages';
 import ChatInput from '@/app/components/Chat/ChatInput';
 import { Message } from '@/app/types/chat';
 import { sendMessageToOpenAI } from '@/services/openAI';
