@@ -42,15 +42,16 @@ const HomePage = () => {
         transition={{ delay: 0.5, duration: 1 }}
       >
         {/* Bloque de texto y foto */}
-        <div className="col-span-2 grid grid-cols-2 gap-4">
-          <Card className="p-4 bg-gray-800 text-white">
-            <h2 className="text-2xl font-bold mb-4">Texto Sección 1</h2>
-            <Image src="/images/foto1.jpeg" alt="Foto 1" width={500} height={300} className="rounded-lg" />
-          </Card>
-          <Card className="p-4 bg-gray-800 text-white">
-            <h2 className="text-2xl font-bold mb-4">Texto Sección 2</h2>
-            <Image src="/images/foto2.jpeg" alt="Foto 2" width={500} height={300} className="rounded-lg" />
-          </Card>
+        <div className="grid grid-cols-2 gap-8 p-8">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+            <h2 className="text-2xl font-bold text-white mb-4">Texto Sección 1</h2>
+            <img src="/foto1.jpeg" alt="Foto 1" className="w-full h-auto rounded-lg hover:scale-105 transition-transform duration-300" />
+          </div>
+          
+          <div className="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+            <h2 className="text-2xl font-bold text-white mb-4">Texto Sección 2</h2>
+            <img src="/foto2.jpeg" alt="Foto 2" className="w-full h-auto rounded-lg hover:scale-105 transition-transform duration-300" />
+          </div>
         </div>
 
         {/* Imagen grande y Asistente */}
