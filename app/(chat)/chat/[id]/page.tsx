@@ -9,8 +9,8 @@ import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
 import type { DBMessage } from '@/lib/db/schema';
 import type { Attachment, UIMessage } from 'ai';
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function Page(props: any) {
+  const id = props.params.id;
 
   const chat = await getChatById({ id });
   if (!chat) {
