@@ -5,8 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Navbar from '@/app/components/Navbar'; 
-import { Toaster } from '@/app/components/ui/toaster';    // ✅ Import correcto del Toaster
-import { ToastProvider } from '@/app/hook/use-toast';    // ✅ Import del Provider
+import { Toaster } from '@/app/components/ui/toaster'; // ✅ Toaster global correcto
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -30,10 +29,8 @@ export default function RootLayout({
         >
           <SessionProvider>
             <Navbar />
-            <ToastProvider>          {/* ✅ Envolvemos en el Provider para que los toasts funcionen */}
-              <Toaster />            {/* ✅ Nuestro Toaster global */}
-              {children}
-            </ToastProvider>
+            {children}
+            <Toaster /> {/* Toaster debe ir fuera para estar disponible globalmente */}
           </SessionProvider>
         </ThemeProvider>
       </body>
