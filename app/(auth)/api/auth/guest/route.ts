@@ -1,4 +1,3 @@
-import { signIn } from 'next-auth/react';
 import { isDevelopmentEnvironment } from '@/lib/constants';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
@@ -18,7 +17,10 @@ export async function GET(request: Request) {
       return NextResponse.redirect(new URL('/', request.url));
     }
 
-    return signIn('guest', { redirect: true, callbackUrl: redirectUrl });
+    // ✅ Redirección manual al endpoint de NextAuth
+    return NextResponse.redirect(
+      new URL(`/api/auth/signin/guest?callbackUrl=${encodeURIComponent(redirectUrl)}`, request.url)
+    );
   } catch (error) {
     console.error('❌ ERROR en /api/auth/guest:', error);
     return new Response('Internal Server Error', { status: 500 });
