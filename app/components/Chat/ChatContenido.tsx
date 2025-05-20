@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ChatHeader from '@/app/components/Chat/ChatHeader';
 import ChatMessage from '@/app/components/Chat/ChatMessages';
 import ChatInput from '@/app/components/Chat/ChatInput';
-import { Message } from '@/app/types/chat';
+import type { Message } from '@/app/types/chat';
 import { sendMessageToOpenAI } from '@/app/services/openAI';
 import { Loader } from 'lucide-react';
 
@@ -13,13 +13,14 @@ const Index = () => {
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Bienvenido al sistema de evaluación de garantías de Wontech. Soy su asistente especializado en casos de garantía. Por favor, describa su situación para que pueda determinar si su caso está cubierto por nuestra política de garantía.',
-      timestamp: new Date()
-    }
+      content:
+        'Bienvenido al sistema de evaluación de garantías de Wontech. Soy su asistente especializado en casos de garantía. Por favor, describa su situación para que pueda determinar si su caso está cubierto por nuestra política de garantía.',
+      timestamp: new Date(),
+    },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { addToast  } = useToast();
+  const { toast } = useToast(); // ✅ corregido: se usa 'toast' en vez de 'addToast'
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -32,39 +33,37 @@ const Index = () => {
   const handleSendMessage = async (content: string) => {
     if (!content.trim()) return;
 
-    // Add the user message to the chat
     const userMessage: Message = {
       id: uuidv4(),
       role: 'user',
       content,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
     try {
-      // Collect all messages to send to OpenAI
       const chatHistory = [...messages, userMessage];
-      
-      // Get response from OpenAI Assistant API
       const response = await sendMessageToOpenAI(chatHistory);
-      
-      // Add the assistant's response
+
       const assistantMessage: Message = {
         id: uuidv4(),
         role: 'assistant',
         content: response,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
-      
+
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error:', error);
-      addToast({
-        title: "Error",
-        description: `${error instanceof Error ? error.message : "Se produjo un error al procesar su consulta. Por favor inténtelo nuevamente."}`,
-        variant: "destructive",
+      toast({
+        title: 'Error',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'Se produjo un error al procesar su consulta. Por favor inténtelo nuevamente.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -74,7 +73,7 @@ const Index = () => {
   return (
     <div className="flex flex-col h-screen max-h-screen chat-gradient">
       <ChatHeader />
-      
+
       <div className="flex-1 overflow-y-auto p-4">
         <div className="max-w-3xl mx-auto">
           {messages.map((message) => (
@@ -89,7 +88,7 @@ const Index = () => {
           <div ref={messagesEndRef} />
         </div>
       </div>
-      
+
       <div className="border-t">
         <div className="max-w-3xl mx-auto w-full">
           <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} />
