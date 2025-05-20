@@ -1,5 +1,3 @@
-'use client';
-
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
