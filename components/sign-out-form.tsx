@@ -1,25 +1,19 @@
-import Form from 'next/form';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
-import { signOut } from '@/app/(auth)/auth';
-
-export const SignOutForm = () => {
+export function SignOutForm({
+  action,
+  children,
+}: {
+  action: NonNullable<
+    string | ((formData: FormData) => void | Promise<void>) | undefined
+  >;
+  children: React.ReactNode;
+}) {
   return (
-    <Form
-      className="w-full"
-      action={async () => {
-        'use server';
-
-        await signOut({
-          redirectTo: '/',
-        });
-      }}
-    >
-      <button
-        type="submit"
-        className="w-full text-left px-1 py-0.5 text-red-500"
-      >
-        Sign out
-      </button>
-    </Form>
+    <form action={action} className="flex flex-col gap-4 px-4 sm:px-16">
+      {/* ... resto del contenido */}
+      {children}
+    </form>
   );
-};
+}
