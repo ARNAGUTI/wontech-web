@@ -9,8 +9,8 @@ import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
 import type { DBMessage } from '@/lib/db/schema';
 import type { Attachment, UIMessage } from 'ai';
 
-export default async function Page(props: { params: { id: string } }) {
-  const { id } = props.params;
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
 
   const chat = await getChatById({ id });
   if (!chat) {
@@ -41,7 +41,7 @@ export default async function Page(props: { params: { id: string } }) {
     }));
   }
 
-  const cookieStore = await cookies(); // ✅ necesario el await
+  const cookieStore = await cookies();
   const chatModelFromCookie = cookieStore.get('chat-model');
 
   return (
