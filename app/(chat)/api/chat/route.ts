@@ -1,73 +1,12 @@
-import {
-  appendClientMessage,
-  appendResponseMessages,
-  createDataStream,
-  smoothStream,
-  streamText,
-} from 'ai';
-import { auth, type UserType } from '@/app/(auth)/auth';
-import { type RequestHints, systemPrompt } from '@/lib/ai/prompts';
-import {
-  createStreamId,
-  deleteChatById,
-  getChatById,
-  getMessageCountByUserId,
-  getMessagesByChatId,
-  getStreamIdsByChatId,
-  saveChat,
-  saveMessages,
-} from '@/lib/db/queries';
-import { generateUUID, getTrailingMessageId } from '@/lib/utils';
-import { generateTitleFromUserMessage } from '../../actions';
-import { createDocument } from '@/lib/ai/tools/create-document';
-import { updateDocument } from '@/lib/ai/tools/update-document';
-import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
-import { getWeather } from '@/lib/ai/tools/get-weather';
-import { isProductionEnvironment } from '@/lib/constants';
-import { myProvider } from '@/lib/ai/providers';
-import { entitlementsByUserType } from '@/lib/ai/entitlements';
-import { geolocation } from '@vercel/functions';
-import {
-  createResumableStreamContext,
-  type ResumableStreamContext,
-} from 'resumable-stream';
-import { after } from 'next/server';
-import type { Chat } from '@/lib/db/schema';
-
-// ✅ Corrección añadida:
 import { postRequestBodySchema, type PostRequestBody } from './schema';
 
 export const maxDuration = 60;
 
-let globalStreamContext: ResumableStreamContext | null = null;
-
-function getStreamContext() {
-  if (!globalStreamContext) {
-    try {
-      globalStreamContext = createResumableStreamContext({
-        waitUntil: after,
-      });
-    } catch (error: any) {
-      if (error.message.includes('REDIS_URL')) {
-        console.log(
-          ' > Resumable streams are disabled due to missing REDIS_URL',
-        );
-      } else {
-        console.error(error);
-      }
-    }
-  }
-
-  return globalStreamContext;
-}
-
-// 🚀 Modelos válidos en OpenAI
 const VALID_MODELS = ['gpt-3.5-turbo', 'gpt-4', 'text-davinci-003'];
 
 export async function POST(request: Request) {
   let requestBody: PostRequestBody;
 
-  // 🔍 Verificación de variables de entorno
   console.log('🔍 OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? '✅ Cargada' : '❌ No encontrada');
   console.log('🔍 ASSISTANT_ID:', process.env.ASSISTANT_ID ? '✅ Cargada' : '❌ No encontrada');
 
@@ -105,7 +44,6 @@ export async function POST(request: Request) {
     }
 
     let buffer = '';
-
     const reader = response.body.getReader();
 
     const stream = new ReadableStream({
@@ -122,24 +60,18 @@ export async function POST(request: Request) {
             }
 
             const chunk = decoder.decode(value);
-            console.log('📌 Chunk recibido (crudo):', chunk);
-
             buffer += chunk;
 
-            // Dividir por líneas y procesar solo las completas
             const lines = buffer.split('\n');
-            buffer = lines.pop()!;  // Lo que queda incompleto lo guardamos
+            buffer = lines.pop() ?? '';
 
             lines.forEach((line) => {
-              console.log('➡️ Línea detectada antes de enviar:', line);
-
               if (line.startsWith('data:')) {
                 const jsonData = line.replace('data: ', '').trim();
                 try {
                   if (jsonData !== "[DONE]") {
-                    JSON.parse(jsonData);  // Si se puede parsear, lo enviamos
+                    JSON.parse(jsonData);
                   }
-                  console.log('✅ JSON válido (enviado al frontend):', `data: ${jsonData}\n\n`);
                   controller.enqueue(`data: ${jsonData}\n\n`);
                 } catch (err) {
                   console.warn('⚠️ JSON no válido (posiblemente fragmentado), almacenado temporalmente:', jsonData);
@@ -172,9 +104,9 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  // Código original del GET
+  return new Response('GET not implemented', { status: 501 });
 }
 
 export async function DELETE(request: Request) {
-  // Código original del DELETE
+  return new Response('DELETE not implemented', { status: 501 });
 }
