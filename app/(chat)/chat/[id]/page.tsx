@@ -13,6 +13,7 @@ export default async function Page(props: { params: { id: string } }) {
   const { id } = props.params;
   const chat = await getChatById({ id });
 
+
   if (!chat) {
     notFound();
   }
