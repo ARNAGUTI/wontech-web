@@ -15,10 +15,8 @@ export interface LoginActionState {
   status: 'idle' | 'in_progress' | 'success' | 'failed' | 'invalid_data';
 }
 
-export const login = async (
-  _: LoginActionState,
-  formData: FormData,
-): Promise<LoginActionState> => {
+export const login = async (formData: FormData): Promise<LoginActionState> => {
+
   try {
     const validatedData = authFormSchema.parse({
       email: formData.get('email'),
@@ -51,10 +49,8 @@ export interface RegisterActionState {
     | 'invalid_data';
 }
 
-export const register = async (
-  _: RegisterActionState,
-  formData: FormData,
-): Promise<RegisterActionState> => {
+export const register = async (formData: FormData): Promise<RegisterActionState> => {
+
   try {
     const validatedData = authFormSchema.parse({
       email: formData.get('email'),

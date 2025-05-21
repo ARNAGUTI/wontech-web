@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useActionState, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AuthForm } from '@/components/auth-form';
 import { SubmitButton } from '@/components/submit-button';
@@ -13,41 +13,31 @@ import { useSession } from 'next-auth/react';
 
 export default function Page() {
   const router = useRouter();
+  const { update: updateSession } = useSession();
 
   const [email, setEmail] = useState('');
   const [isSuccessful, setIsSuccessful] = useState(false);
-
-  const [state, formAction] = useActionState<RegisterActionState, FormData>(
-    register,
-    {
-      status: 'idle',
-    },
-  );
-
-  const { update: updateSession } = useSession();
+  const [status, setStatus] = useState<RegisterActionState['status']>('idle');
 
   useEffect(() => {
-    if (state.status === 'user_exists') {
+    if (status === 'user_exists') {
       toast({ type: 'error', description: 'Account already exists!' });
-    } else if (state.status === 'failed') {
+    } else if (status === 'failed') {
       toast({ type: 'error', description: 'Failed to create account!' });
-    } else if (state.status === 'invalid_data') {
-      toast({
-        type: 'error',
-        description: 'Failed validating your submission!',
-      });
-    } else if (state.status === 'success') {
+    } else if (status === 'invalid_data') {
+      toast({ type: 'error', description: 'Failed validating your submission!' });
+    } else if (status === 'success') {
       toast({ type: 'success', description: 'Account created successfully!' });
-
       setIsSuccessful(true);
       updateSession();
       router.refresh();
     }
- }, [state, updateSession, router]);
+  }, [status, updateSession, router]);
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
     setEmail(formData.get('email') as string);
-    formAction(formData);
+    const result = await register(formData);
+    setStatus(result.status);
   };
 
   return (

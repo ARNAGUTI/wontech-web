@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useActionState, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from '@/components/toast';
 
 import { AuthForm } from '@/components/auth-form';
@@ -13,40 +13,35 @@ import { useSession } from 'next-auth/react';
 
 export default function Page() {
   const router = useRouter();
+  const { update: updateSession } = useSession();
 
   const [email, setEmail] = useState('');
   const [isSuccessful, setIsSuccessful] = useState(false);
-
-  const [state, formAction] = useActionState<LoginActionState, FormData>(
-    login,
-    {
-      status: 'idle',
-    },
-  );
-
-  const { update: updateSession } = useSession();
+  const [status, setStatus] = useState<LoginActionState['status']>('idle');
 
   useEffect(() => {
-    if (state.status === 'failed') {
+    if (status === 'failed') {
       toast({
         type: 'error',
         description: 'Invalid credentials!',
       });
-    } else if (state.status === 'invalid_data') {
+    } else if (status === 'invalid_data') {
       toast({
         type: 'error',
         description: 'Failed validating your submission!',
       });
-    } else if (state.status === 'success') {
+    } else if (status === 'success') {
       setIsSuccessful(true);
       updateSession();
       router.refresh();
     }
-  }, [state.status, updateSession, router]);
+  }, [status, updateSession, router]);
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
     setEmail(formData.get('email') as string);
-    formAction(formData);
+
+    const result = await login(formData);
+    setStatus(result.status);
   };
 
   return (
