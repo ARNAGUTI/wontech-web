@@ -64,12 +64,22 @@ export const {
     }),
     Credentials({
       id: 'guest',
-      credentials: {},
-      async authorize() {
+      name: 'Guest',
+      credentials: {
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        const isValidGuest =
+          credentials?.username === 'guest' &&
+          credentials?.password === DUMMY_PASSWORD;
+
+        if (!isValidGuest) return null;
+
         const [guestUser] = await createGuestUser();
         return { ...guestUser, type: 'guest' };
       },
-    }),
+    })
   ],
   callbacks: {
     async jwt({ token, user }) {
