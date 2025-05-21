@@ -1,5 +1,7 @@
 import { auth } from '@/app/(auth)/auth';
 import type { ArtifactKind } from '@/components/artifact';
+export const runtime = 'nodejs';
+
 import {
   deleteDocumentsByIdAfterTimestamp,
   getDocumentsById,

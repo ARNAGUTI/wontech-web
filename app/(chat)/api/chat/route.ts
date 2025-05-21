@@ -1,4 +1,5 @@
 import { postRequestBodySchema, type PostRequestBody } from './schema';
+export const runtime = 'nodejs';
 
 export const maxDuration = 60;
 

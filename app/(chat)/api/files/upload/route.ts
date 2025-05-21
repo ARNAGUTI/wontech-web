@@ -1,6 +1,7 @@
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+export const runtime = 'nodejs';
 
 import { auth } from '@/app/(auth)/auth';
 
