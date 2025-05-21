@@ -1,11 +1,6 @@
-'use client';
-
 import type { Metadata } from 'next';
-import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
-import { SessionProvider } from 'next-auth/react';
-import Navbar from '@/app/components/Navbar';
-import { Toaster } from '@/app/components/ui/toaster';
+import { ClientProviders } from '@/app/components/ClientProviders';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
@@ -21,18 +16,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SessionProvider>
-            <Navbar />
-            {children}
-            <Toaster />
-          </SessionProvider>
-        </ThemeProvider>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );
